@@ -1,6 +1,7 @@
 # Overview
+**Questions?  devtest@eimprovement.com**
 
-Thank you for taking the time to take our test. You will need to complete **One** of of following developer candidate tests:
+Thank you for taking the time to take our test. You will need to complete **one** of of following developer candidate tests:
 
 - [MVC](https://github.com/eimprovement/Dev-Test-MVC)
 - [Angular 7](https://github.com/eimprovement/Dev-Test-Angular7)
