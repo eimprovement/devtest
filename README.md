@@ -1,7 +1,7 @@
 # Overview
 **Questions?  devtest@eimprovement.com**
 
-Thank you for taking the time to take our test. You will need to complete **one** of of following developer candidate tests:
+Thank you for taking the time to take our test. You will need to complete **`one` of of following developer candidate tests**:
 
 - [MVC](https://github.com/eimprovement/Dev-Test-MVC)
 - [Angular 7](https://github.com/eimprovement/Dev-Test-Angular7)
@@ -41,10 +41,10 @@ These are the mimimum requirements for completing the test, however, this is you
 
 1. Pull down the repository from GitHub
 2. Create a branch for your work
-3. Publish your branch
+3. Publish your branch (you will need to request access to the repository by sending an email to **devtest@eimprovement.com**
 4. Use the "Find Pets by **status**" endpoint to display a list of **available** pets to the user
 5. Use the "Update an existing pet" endpoint to allow users to flag pets as being **sold** in the component you built in step 4.
 6. Use the "Add a new pet to the store" endpoint to allow users to create new pets.
 7. Use the "Deletes a pet" endpoint to allows users to delete pets
-8. Create a pull request
+8. Create a pull request 
 9. Send us an email at **devtest@eimprovement.com** and let us know you are ready for a code review
