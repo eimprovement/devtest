@@ -1,8 +1,188 @@
-﻿@{
+﻿@model List<Petstore.ET.PetET>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#exampleTable').DataTable();
+
+        $("#save_changes").click(function () {
+            debugger
+            var petET = {
+                id: $("#id_selected").text(),
+                status: $("#petStatusSelected").find('option:selected').text()
+            }
+
+            function succ(model) {
+                alert("Saved!");
+                $('#exampleModalCenter').modal('hide');
+            }
+
+            sendAjax(petET, "@Url.Action("SavePetStatus", "Home")", succ);
+
+        });
+
+        $('#exampleTable').on('click', "[data-cmd*='update']", function () {
+              $("#name_selected").text($(this).attr("data-name"));
+              $("#id_selected").text($(this).attr("id"));
+            $('#exampleModalCenter').modal('show');
+        });
+
+
+        $('#exampleTable').on('click', "[data-cmd*='delete']", function () {
+            $("#selectedToDeleteId").text($(this).attr("id"));
+            $("#selectedToDeleteName").text($(this).attr("data-name"));
+            $('#modalDeleteItem').modal('show');
+        });
+
+
+        $("#deleteItem").click(function () {
+            function succ(model) {
+                alert("Saved!");
+                $('#modalDeleteItem').modal('hide');
+            }
+            sendAjax(null, "/Home/Delete/" + $("#selectedToDeleteId").text()+"", succ);
+        });
+
+
+
+    });
+
+</script>
+
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4"></div>
+    <div class="col-4" style="text-align:right;">
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Home")'">Add Pet</button>
+    </div>    
 </div>
+
+<hr />
+
+<table id="exampleTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            foreach (var item in Model)
+            {
+
+                string Tags = "Tags";
+
+                if (item.tags != null)
+                {
+                    @foreach (var tag in item.tags)
+                    {
+                        Tags += tag + " ";
+                    }
+                }
+
+                string photoUrl = string.Empty;
+
+                if (item.photoUrls != null)
+                {
+                    if (item.photoUrls.Count() != 0)
+                    {
+                        photoUrl = item.photoUrls.First();
+                    }
+                }
+
+        <tr>
+            <td>@item.id</td>
+            @*<td><img src="@photoUrl" alt="" width="42" height="42"> </td>*@
+            <td>@item.name</td>            
+            <td>@item.status</td>
+            <td><a href="@Url.Action("Edit","Home", new { id = item.id })" class="btn btn-success" style="font-size:10px;">Details</a></td>
+            <td><span id="@item.id" data-cmd="update" data-name="@item.name" class="btn btn-info" style="font-size:10px;">Update</span></td>
+            <td id="@item.id" data-cmd="delete" data-name="@item.name"><span class="btn btn-danger" style="font-size:10px;">Delete</span></td>
+        </tr>
+            }
+        }
+
+    </tbody>
+
+</table>
+
+<hr />
+
+<!-- Modal -->
+<div id="exampleModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit <label for="" class="btn btn-outline-dark" style="font-size:11px;"> <span id="id_selected"></span> </label></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <div class="form-group">                        
+                        <label for="">Name: <span id="name_selected"></span> </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sel1">Status:</label>
+                        <select class="form-control" id="petStatusSelected">
+                            <option>available</option>
+                            <option>pending</option>
+                            <option>sold</option>
+                        </select>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="save_changes" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalDeleteItem" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Delete  <span id="selectedToDeleteId" class="btn btn-outline-dark" style="font-size:11px;"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <div class="form-group">
+                        <h5>Are you sure you want to delete it?</h5><br />                       
+                        <span id="selectedToDeleteName"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="deleteItem" type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

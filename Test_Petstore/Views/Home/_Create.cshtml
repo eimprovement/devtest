@@ -1,0 +1,120 @@
+﻿@model Petstore.ET.PetET
+
+
+<script type="text/javascript">
+
+    $().ready(function () {
+
+        var urlPhoto = 1;
+
+        $("#addNew").click(function () {
+
+            var tags = [];
+
+            var tagCounter = 1;
+
+            $("[id*='tags']").each(function () {
+                var tag = {
+                    id: tagCounter,
+                    name: $(this).val()
+                }
+                tags.push(tag);
+
+                tagCounter += 1;
+            });
+
+            var photoUrlsET = [];
+
+            $("[id*='photoUrls']").each(function () {
+                if ($(this).val() != "") {
+                    photoUrlsET.push($(this).val());
+                }
+            });
+
+            var categoryET = {
+                id: "1",
+                name: $("#category").val()
+            }
+
+            var petET = {
+                id: "",
+                "name": $("#name").val(),
+                "status": $("#petStatusSelected").find('option:selected').text(),
+                "category": categoryET,
+                "photoUrls": photoUrlsET,
+                "tags": tags
+            }
+
+            function succ(model) {
+                window.location.href = "/Home/Edit/";
+            }
+
+            sendAjax(petET, "@Url.Action("AddNewPet", "Home")", succ);
+
+        });
+
+
+        $("#AddphotoUrl").click(function () {
+            $("#photoUrlsContent").append('<input id="photoUrls" type="text" class="form-control" />');
+        });
+
+        $("#AddTag").click(function () {
+            $("#AddTagContent").append('<input id="tags" type="text" class="form-control" />');
+        });
+
+
+    });
+
+
+</script>
+
+<h4>New Pet</h4>
+<hr />
+<div class="row">
+
+
+    <div class="col-md-4">
+
+        <div class="form-group">
+            <label>name</label>
+            <input id="name" type="text" name="" value="" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>category</label>
+            <input id="category" type="text" name="" value="" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>photoUrls</label>
+            <span id="AddphotoUrl" class="btn btn-primary" style="font-size:10px;">Add photoUrl</span>
+            <span id="photoUrlsContent"></span>
+        </div>
+
+        <div class="form-group">
+            <label>tags</label>
+            <span id="AddTag" class="btn btn-primary" style="font-size:10px;">Add Tag</span>
+            <span id="AddTagContent"></span>
+        </div>
+
+        <div class="form-group">
+            <select class="form-control" id="petStatusSelected">
+                <option>available</option>
+                <option>pending</option>
+                <option>sold</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button id="addNew" class="btn btn-primary">Create</button>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

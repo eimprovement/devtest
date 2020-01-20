@@ -1,0 +1,113 @@
+﻿@model Petstore.ET.PetET
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>View</h1>
+
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+        <form asp-action="AddNewPet">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @{
+                if (@Model != null)
+                {
+                    <div class="form-group">
+                        <span class="btn btn-success">ID: @Model.id</span>
+                    </div>
+                }
+            }
+
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="category" class="control-label"></label>
+                <input asp-for="category.name" class="form-control" />
+                <span asp-validation-for="category" class="text-danger"></span>
+            </div>
+
+
+            @{
+                if (Model != null)
+                {
+                    <div class="form-group">
+                        <label asp-for="photoUrls" class="control-label"></label>
+
+                        @if (Model.photoUrls != null)
+                        {
+
+                            @for (int i = 0; i < Model.photoUrls.Length; i++)
+                            {
+                                <input asp-for="@Model.photoUrls[i]" class="form-control" />
+                            }
+                        }
+
+                    </div>
+
+                }
+            }
+
+
+            @{
+                <div class="form-group">
+                    <label asp-for="tags" class="control-label"></label>
+
+                    @if (@Model.tags != null)
+                    {
+                        @foreach (var currentTag in Model.tags)
+                        {
+                            //currentTag.name
+                            <input asp-for="@currentTag.name" class="form-control" />
+                        }
+                    }
+
+                </div>
+
+            }
+
+            <div class="form-group">
+                <label asp-for="status" class="control-label"></label>
+
+                <select asp-for="status" class="form-control">
+                    <option value="available">Available</option>
+                    <option value="pending">Pending</option>
+                    <option value="sold">Sold</option>
+                </select>
+
+
+            </div>
+            @*<div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>*@
+        </form>
+    </div>
+
+    <div class="col-md-4">
+
+        @{
+            if (Model.photoUrls != null)
+            {
+                foreach (var item in Model.photoUrls)
+                {
+                    <img src="@item" alt="" width="300" />
+                }
+            }
+        }
+
+
+    </div>
+
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
